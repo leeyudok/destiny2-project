@@ -13,6 +13,7 @@
       <img
         src="@/assets/topLogo.png"
         class="topLogoImg"
+        @click="topLogoClick"
       />
     </div>
     <div
@@ -58,6 +59,9 @@ export default {
     logoClick() {
       this.collapsed = !this.collapsed;
     },
+    topLogoClick() {
+      this.$router.push('/');
+    },
   },
 };
 </script>
@@ -74,9 +78,11 @@ export default {
     width: 40px;
     height: 40px;
     left: 0;
+    cursor: pointer;
   }
   .topLogoImg {
     transform: translateX(88%);
+    cursor: pointer;
   }
 
   .body {
