@@ -1,4 +1,3 @@
 module.exports = {
-  outputDir: 'docs',
-  assetsDir: 'assets',
+  outputDir: 'dist', // docs
 };
