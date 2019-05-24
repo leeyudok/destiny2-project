@@ -1,19 +1,22 @@
 <template>
   <div class="home">
-    home
-    <hello-world>
-      123
-    </hello-world>
+    <img
+      src="@/assets/190524.png"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld.vue';
-
 export default {
   name: 'Home',
   components: {
-    HelloWorld,
   },
 };
 </script>
+
+<style>
+  .home {
+    display: flex;
+    justify-content: center;
+  }
+</style>

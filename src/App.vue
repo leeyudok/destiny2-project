@@ -5,13 +5,22 @@
     <div
       class="top"
     >
-      top
+      <img
+        src="@/assets/menuIcon.png"
+        class="logoImg"
+        @click="logoClick"
+      />
+      <img
+        src="@/assets/topLogo.png"
+        class="topLogoImg"
+      />
     </div>
     <div
       class="body"
     >
       <div
         class="navi"
+        :class="{ collapsed: collapsed }"
       >
         <div>
           <router-link to="/">
@@ -26,6 +35,7 @@
       </div>
       <div
         class="contents"
+        :class="{ collapsed: collapsed }"
       >
         <router-view/>
       </div>
@@ -34,38 +44,41 @@
 </template>
 
 <script>
-import 'buefy/dist/buefy.css';
-
 export default {
   components: {
   },
   data() {
     return {
-      checkbox: false,
+      collapsed: true,
     };
   },
   computed: {
   },
   methods: {
+    logoClick() {
+      this.collapsed = !this.collapsed;
+    },
   },
 };
 </script>
 
 <style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-  }
-
   .top {
     position: absolute;
     height: 50px;
     width: 100%;
     border-bottom: 1px solid #000;
   }
+  .logoImg {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0;
+  }
+  .topLogoImg {
+    transform: translateX(88%);
+  }
+
   .body {
     position: absolute;
     top: 50px;
@@ -80,9 +93,20 @@ export default {
     height: 100%;
     background-color: #FFFFFF;
   }
+  .navi.collapsed {
+    width: 50px;
+  }
   .contents {
     width: 100%;
     height: 100%;
-    margin-left: 200px;
+    padding-left: 50px;
+  }
+  @media (min-width: 1000px) {
+    .contents {
+      padding-left: 200px;
+    }
+  }
+  .contents.collapsed {
+    padding-left: 50px;
   }
 </style>
