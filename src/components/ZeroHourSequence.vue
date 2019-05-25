@@ -10,7 +10,7 @@
            :key="index"
            class="control">
         <b-checkbox
-          v-if="column.field !== 'seqResult'"
+          v-if="column.field !== 'seqResult' && column.field !== 'console1'"
           v-model="column.visible"
         >
           {{ column.label }}
@@ -21,6 +21,12 @@
         v-model="seqColorFlag"
       >
         시퀀스 색상
+      </b-checkbox>
+      <b-checkbox
+        class="control seqColorCheckbox"
+        v-model="simpleModeFlag"
+      >
+        심플 모드
       </b-checkbox>
     </b-field>
     <br/>
@@ -45,6 +51,21 @@
             v-if="column.field === 'seqResult' && seqColorFlag"
             class="cell"
             :class="cellRenderer(props.row[column.field])"
+          >
+            {{ props.row[column.field] }}
+          </div>
+          <div
+            v-else-if="column.field === 'console1' &&
+            simpleModeFlag && console1Duplicate(props.index)"
+            class="cell"
+            :class="cellRenderer(props.row.seqResult)"
+          >
+            {{ props.row[column.field] }} ( {{ props.row.console2 }} )
+          </div>
+          <div
+            v-else-if="simpleModeFlag"
+            class="cell"
+            :class="cellRenderer(props.row.seqResult)"
           >
             {{ props.row[column.field] }}
           </div>
@@ -81,6 +102,21 @@
             {{ props.row[column.field] }}
           </div>
           <div
+            v-else-if="column.field === 'console1' &&
+            simpleModeFlag && console1Duplicate(props.index)"
+            class="cell"
+            :class="cellRenderer(props.row.seqResult)"
+          >
+            {{ props.row[column.field] }} ( {{ props.row.console2 }} )
+          </div>
+          <div
+            v-else-if="simpleModeFlag"
+            class="cell"
+            :class="cellRenderer(props.row.seqResult)"
+          >
+            {{ props.row[column.field] }}
+          </div>
+          <div
             v-else
           >
             {{ props.row[column.field] }}
@@ -104,7 +140,8 @@ export default {
   data() {
     return {
       defaultSortDirection: 'asc',
-      seqColorFlag: true,
+      seqColorFlag: false,
+      simpleModeFlag: false,
       columns: [
         {
           label: '콘솔1',
@@ -285,6 +322,19 @@ export default {
       },
     };
   },
+  watch: {
+    simpleModeFlag(flag) {
+      if (flag) {
+        this.seqColorFlag = false;
+        this.columns[1].visible = false;
+        this.columns[2].visible = false;
+      } else {
+        this.seqColorFlag = true;
+        this.columns[1].visible = true;
+        this.columns[2].visible = true;
+      }
+    },
+  },
   methods: {
     cellRenderer(seqResult) {
       if (!seqResult) {
@@ -306,6 +356,27 @@ export default {
         resultCls = 'purple';
       }
       return resultCls;
+    },
+    console1Duplicate(currIdx) {
+      var currWeekData = this.seqData[this.elements];
+      var currRow = currWeekData[currIdx];
+      var result = false;
+      if (currIdx == 0) {
+        if (currRow.console1 == currWeekData[currIdx + 1].console1) {
+          result = true;
+        }
+      } else if (currIdx == currWeekData.length - 1) {
+        if (currRow.console1 == currWeekData[currIdx - 1].console1) {
+          result = true;
+        }
+      } else {
+        if ((currRow.console1 == currWeekData[currIdx + 1].console1)
+          || (currRow.console1 == currWeekData[currIdx - 1].console1)
+        ) {
+          result = true;
+        }
+      }
+      return result;
     },
   },
 };
