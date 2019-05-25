@@ -1,7 +1,14 @@
 <template>
   <div>
-    <b-tabs v-model="activeTab">
-      <b-tab-item label="room">
+    <b-tabs
+      v-model="activeTab"
+      type="is-boxed"
+      destroy-on-hide
+    >
+      <br/>
+      <b-tab-item
+        label="room"
+      >
         <img
           src="@/assets/zeroHour/room.png"
         />
@@ -37,6 +44,7 @@ export default {
   },
   data() {
     return {
+      notMobile: true,
       activeTab: 0,
       elementList: ['solar', 'arc', 'void'],
     };

@@ -81,7 +81,7 @@ export default {
     cursor: pointer;
   }
   .topLogoImg {
-    transform: translateX(88%);
+    padding-left: 50px;
     cursor: pointer;
   }
 
@@ -98,6 +98,7 @@ export default {
     width: 200px;
     height: 100%;
     background-color: #FFFFFF;
+    z-index: 1;
   }
   .navi.collapsed {
     width: 50px;
