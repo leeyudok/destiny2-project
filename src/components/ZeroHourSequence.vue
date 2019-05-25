@@ -9,7 +9,10 @@
       <div v-for="(column, index) in columns"
            :key="index"
            class="control">
-        <b-checkbox v-model="column.visible">
+        <b-checkbox
+          v-if="column.field !== 'seqResult'"
+          v-model="column.visible"
+        >
           {{ column.label }}
         </b-checkbox>
       </div>
@@ -321,7 +324,7 @@ export default {
     width: 45%;
   }
   .zeroSeqTable > .table-wrapper {
-    overflow-y: hidden;
+    height: 100%;
   }
   .zeroSeqTable.right > .table-wrapper > table > thead {
     display: none;
@@ -330,7 +333,7 @@ export default {
     display: none;
   }
   .table.is-narrow.has-mobile-cards {
-    transform: translateY(16px);
+    /*transform: translateY(0px);*/
   }
   .cell.blue {
     background-color: blue;
