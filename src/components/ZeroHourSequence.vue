@@ -12,6 +12,7 @@
         <b-checkbox
           v-if="column.field !== 'seqResult' && column.field !== 'console1'"
           v-model="column.visible"
+          :disabled="simpleModeFlag"
         >
           {{ column.label }}
         </b-checkbox>
@@ -322,10 +323,12 @@ export default {
       },
     };
   },
+  computed: {
+  },
   watch: {
     simpleModeFlag(flag) {
       if (flag) {
-        this.seqColorFlag = false;
+        this.seqColorFlag = true;
         this.columns[1].visible = false;
         this.columns[2].visible = false;
       } else {
@@ -337,7 +340,7 @@ export default {
   },
   methods: {
     cellRenderer(seqResult) {
-      if (!seqResult) {
+      if (!seqResult || !this.seqColorFlag) {
         return;
       }
       const color = seqResult.substring(0, 2);
@@ -400,9 +403,9 @@ export default {
   .zeroSeqTable.right > .table-wrapper > table > thead {
     display: none;
   }
-  .zeroSeqTable.right > .table-mobile-sort {
-    display: none;
-  }
+  /*.zeroSeqTable.right > .table-mobile-sort {*/
+    /*display: none;*/
+  /*}*/
   .table.is-narrow.has-mobile-cards {
     /*transform: translateY(0px);*/
   }

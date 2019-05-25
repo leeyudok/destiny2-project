@@ -3,20 +3,20 @@
     <b-tabs v-model="activeTab">
       <b-tab-item label="room">
         <img
-          src="@/assets/zeroHour_room.png"
+          src="@/assets/zeroHour/room.png"
         />
         <br/>
         <img
-          src="@/assets/zeroHour_machineIndex.png"
+          src="@/assets/zeroHour/machineIndex.png"
         />
         <br/>
         <img
-          src="@/assets/zeroHour_clock.png"
+          src="@/assets/zeroHour/clock.png"
         />
       </b-tab-item>
       <b-tab-item
         v-for="element in elementList"
-        :key="'zeroTab ' + element"
+        :key="'zeroHourTab_' + element"
         :label="element + ' week'"
       >
         <ZeroHourSeq
