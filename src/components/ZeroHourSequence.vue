@@ -140,7 +140,7 @@ export default {
   data() {
     return {
       defaultSortDirection: 'asc',
-      seqColorFlag: false,
+      seqColorFlag: true,
       simpleModeFlag: false,
       columns: [
         {
