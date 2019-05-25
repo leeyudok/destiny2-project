@@ -13,6 +13,12 @@
           {{ column.label }}
         </b-checkbox>
       </div>
+      <b-checkbox
+        class="control seqColorCheckbox"
+        v-model="seqColorFlag"
+      >
+        시퀀스 색상
+      </b-checkbox>
     </b-field>
     <br/>
     <b-table
@@ -32,7 +38,18 @@
           :label="column.label"
           :visible="column.visible"
         >
-          {{ props.row[column.field] }}
+          <div
+            v-if="column.field === 'seqResult' && seqColorFlag"
+            class="cell"
+            :class="cellRenderer(props.row[column.field])"
+          >
+            {{ props.row[column.field] }}
+          </div>
+          <div
+            v-else
+          >
+            {{ props.row[column.field] }}
+          </div>
         </b-table-column>
       </template>
     </b-table>
@@ -53,7 +70,18 @@
           :label="column.label"
           :visible="column.visible"
         >
-          {{ props.row[column.field] }}
+          <div
+            v-if="column.field === 'seqResult' && seqColorFlag"
+            class="cell"
+            :class="cellRenderer(props.row[column.field])"
+          >
+            {{ props.row[column.field] }}
+          </div>
+          <div
+            v-else
+          >
+            {{ props.row[column.field] }}
+          </div>
         </b-table-column>
       </template>
     </b-table>
@@ -73,6 +101,7 @@ export default {
   data() {
     return {
       defaultSortDirection: 'asc',
+      seqColorFlag: true,
       columns: [
         {
           label: '콘솔1',
@@ -253,10 +282,36 @@ export default {
       },
     };
   },
+  methods: {
+    cellRenderer(seqResult) {
+      if (!seqResult) {
+        return;
+      }
+      const color = seqResult.substring(0, 2);
+      let resultCls = '';
+      if (color == '파랑') {
+        resultCls = 'blue';
+      } else if (color == '하늘') {
+        resultCls = 'sky';
+      } else if (color == '빨강') {
+        resultCls = 'red';
+      } else if (color == '노랑') {
+        resultCls = 'yellow';
+      } else if (color == '초록') {
+        resultCls = 'green';
+      } else if (color == '보라') {
+        resultCls = 'purple';
+      }
+      return resultCls;
+    },
+  },
 };
 </script>
 
 <style>
+  .seqColorCheckbox {
+    top: -1px;
+  }
   .zeroHourTable > th {
     display: table-cell;
     vertical-align: inherit;
@@ -264,6 +319,9 @@ export default {
   .zeroSeqTable {
     display: inline-block;
     width: 45%;
+  }
+  .zeroSeqTable > .table-wrapper {
+    overflow-y: hidden;
   }
   .zeroSeqTable.right > .table-wrapper > table > thead {
     display: none;
@@ -273,5 +331,28 @@ export default {
   }
   .table.is-narrow.has-mobile-cards {
     transform: translateY(16px);
+  }
+  .cell.blue {
+    background-color: blue;
+    color: white;
+  }
+  .cell.red {
+    background-color: red;
+    color: white;
+  }
+  .cell.sky {
+    background-color: deepskyblue;
+    color: white;
+  }
+  .cell.yellow {
+    background-color: yellow;
+  }
+  .cell.green {
+    background-color: green;
+    color: white;
+  }
+  .cell.purple {
+    background-color: purple;
+    color: white;
   }
 </style>

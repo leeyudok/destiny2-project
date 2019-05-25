@@ -30,7 +30,7 @@
         </div>
         <div>
           <router-link to="/ZeroHour">
-            menu1
+            개시 시간
           </router-link>
         </div>
       </div>
@@ -101,6 +101,12 @@ export default {
   }
   .navi.collapsed {
     width: 50px;
+  }
+  .navi > div {
+    height: 50px;
+    border: 1px solid #2e2e2e;
+    border-radius: 4px;
+    margin: 1px;
   }
   .contents {
     width: 100%;
