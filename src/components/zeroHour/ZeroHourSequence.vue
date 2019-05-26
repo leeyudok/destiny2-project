@@ -2,7 +2,6 @@
   <div
     class="zeroHourSeq"
   >
-    <br/>
     <b-tabs
       v-model="activeTab"
       type="is-toggle"
@@ -16,6 +15,10 @@
         <img
           v-if="activeTab === 0"
           :src="getImgSrc()"
+        />
+        <ZeroHourClock
+          v-if="activeTab === 1"
+          :elements="elements"
         />
         <ZeroHourTable
           v-if="activeTab === 2"
@@ -31,12 +34,14 @@
 </template>
 
 <script>
-import ZeroHourTable from '@/components/ZeroHourTable.vue';
+import ZeroHourTable from '@/components/zeroHour/ZeroHourTable.vue';
+import ZeroHourClock from '@/components/zeroHour/ZeroHourClock.vue';
 
 export default {
   name: 'ZeroHourSeq',
   components: {
     ZeroHourTable,
+    ZeroHourClock,
   },
   props: {
     elements: {
@@ -66,7 +71,6 @@ export default {
   methods: {
     getImgSrc() {
       /* eslint-disable */
-      // return import(`@/assets/zeroHour/${this.elements}Road.png`).default;
       return require(`@/assets/zeroHour/${this.elements}Road.png`);
     },
   },

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import ZeroHourSeq from '@/components/ZeroHourSequence.vue';
+import ZeroHourSeq from '@/components/zeroHour/ZeroHourSequence.vue';
 
 export default {
   name: 'ZeroHour',
