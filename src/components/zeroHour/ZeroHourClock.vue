@@ -13,7 +13,7 @@
         />
         <canvas
           ref="leftZeroClockOver"
-          class="over"
+          class="overCanvas"
           @mousemove="onMousemove($event, 'left')"
           @click="onClick($event, 'left')"
         />
@@ -26,7 +26,7 @@
         />
         <canvas
           ref="rightZeroClockOver"
-          class="over"
+          class="overCanvas"
           @mousemove="onMousemove($event, 'right')"
           @click="onClick($event, 'right')"
         />
@@ -42,10 +42,9 @@
     >
       Reset
     </b-button>
-    {{ showModal }}
-
+    {{ bothNumberValid }}
     <b-modal
-      :active.sync="showModal"
+      :active.sync="bothNumberValid"
       has-modal-card
       @close="closeMadal"
     >
@@ -103,21 +102,21 @@ export default {
     ...mapGetters('ZeroHour', [
       'getSeqResult',
     ]),
+    bothNumberValid: {
+      get() {
+        return this.leftNum !== 0 && this.rightNum !== 0;
+      },
+      set(flag) {
+        this.showModal = flag;
+      },
+    },
   },
   watch: {
     leftNum(num) {
       this.drawArc('left', num);
-      if (num !== 0 && this.rightNum !== 0) {
-        this.showModal = true;
-      }
-      this.showModal = false;
     },
     rightNum(num) {
       this.drawArc('right', num);
-      if (num !== 0 && this.leftNum !== 0) {
-        this.showModal = true;
-      }
-      this.showModal = false;
     },
   },
   methods: {
@@ -188,30 +187,25 @@ export default {
       const centerY = this.canvasSize / 2;
       const diffX = mouseX - centerX;
       const diffY = mouseY - centerY;
-      const inner = this.innerRadius;
-      const outer = this.outerRadius;
       let radian = 0;
       const clockRadius = 1 / 6;
-      if ((diffX ** 2) + (diffY ** 2) >= (inner ** 2)
-        && (diffX ** 2) + (diffY ** 2) <= (outer ** 2)) {
-        radian = Math.atan2(diffY, diffX) / Math.PI;
-        for (let ix = 0, ixLen = 6; ix < ixLen; ix += 1) {
-          if (radian >= clockRadius * ix
-            && radian < clockRadius * (ix + 1)) {
-            this[`${type}Num`] = ix + 4;
-            return;
-          }
+      radian = Math.atan2(diffY, diffX) / Math.PI;
+      for (let ix = 0, ixLen = 6; ix < ixLen; ix += 1) {
+        if (radian >= clockRadius * ix
+          && radian < clockRadius * (ix + 1)) {
+          this[`${type}Num`] = ix + 4;
+          return;
         }
-        for (let ix = 0, ixLen = 6; ix < ixLen; ix += 1) {
-          if (radian < -1 * clockRadius * ix
-            && radian >= -1 * clockRadius * (ix + 1)) {
-            if (ix < 3) {
-              this[`${type}Num`] = 3 - ix;
-              return;
-            }
-            this[`${type}Num`] = 15 - ix;
+      }
+      for (let ix = 0, ixLen = 6; ix < ixLen; ix += 1) {
+        if (radian < -1 * clockRadius * ix
+          && radian >= -1 * clockRadius * (ix + 1)) {
+          if (ix < 3) {
+            this[`${type}Num`] = 3 - ix;
             return;
           }
+          this[`${type}Num`] = 15 - ix;
+          return;
         }
       }
     },
@@ -273,5 +267,9 @@ export default {
     position: relative;
     width: 230px;
     height: 230px;
+  }
+  .overCanvas {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
 </style>
