@@ -159,9 +159,25 @@ const getters = {
   solarSeq: s => s.solarSeq,
   arcSeq: s => s.arcSeq,
   voidSeq: s => s.voidSeq,
-  getSeqResult: (s) => (obj) => {
+  seqResult: (s) => (obj) => {
     const element = obj.element;
-    return s[`${element}Seq`][0].seqResult;
+    const receiveConsole1 = `${obj.left}-${obj.right}`;
+    const elementSeq = s[`${element}Seq`];
+    const result = [];
+    const elementSeqKeys = Object.keys(elementSeq);
+    let resultObj = {};
+    for (let ix = 0, ixLen = elementSeqKeys.length; ix < ixLen; ix++) {
+      const console1 = elementSeq[elementSeqKeys[ix]].console1;
+      resultObj = {};
+      if (receiveConsole1 === console1) {
+        resultObj = {
+          console2: elementSeq[elementSeqKeys[ix]].console2,
+          seqResult: elementSeq[elementSeqKeys[ix]].seqResult,
+        };
+        result.push(resultObj);
+      }
+    }
+    return result;
   },
 };
 

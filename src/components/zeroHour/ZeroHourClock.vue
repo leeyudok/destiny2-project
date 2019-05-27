@@ -33,24 +33,35 @@
       </div>
     </div>
     <br/>
-    leftNum : {{ leftNum }}
-    <br/>
-    rightNum : {{ rightNum }}
-    <br/>
     <b-button
       @click="resetNum"
     >
       Reset
     </b-button>
-    {{ bothNumberValid }}
     <b-modal
       :active.sync="bothNumberValid"
       has-modal-card
       @close="closeMadal"
     >
-      <b-button>
-        Click Me
-      </b-button>
+      <div
+        v-if="getSeqResult.length > 0"
+        class="modalWrapper"
+      >
+        <b-button
+          v-for="list in getSeqResult"
+          class="cell"
+          :key="list.seqResult"
+          :class="cellRenderer(list.seqResult)"
+        >
+          {{ list.seqResult }} ({{ list.console2 }})
+        </b-button>
+      </div>
+      <div
+        v-else
+      >
+        <b-button>NO MATCH</b-button>
+      </div>
+      <br/>
     </b-modal>
   </div>
 </template>
@@ -61,6 +72,8 @@ import zeroHourClock from '@/assets/zeroHour/clock.png';
 
 export default {
   name: 'ZeroHourClock',
+  components: {
+  },
   props: {
     elements: {
       type: String,
@@ -100,7 +113,7 @@ export default {
   },
   computed: {
     ...mapGetters('ZeroHour', [
-      'getSeqResult',
+      'seqResult',
     ]),
     bothNumberValid: {
       get() {
@@ -109,6 +122,18 @@ export default {
       set(flag) {
         this.showModal = flag;
       },
+    },
+    getSeqResult() {
+      if (this.leftNum !== 0 && this.rightNum !== 0) {
+        const lpadLeftNum = String(this.leftNum).length < 2 ? `0${this.leftNum}` : String(this.leftNum);
+        const lpadRightNum = String(this.rightNum).length < 2 ? `0${this.rightNum}` : String(this.rightNum);
+        return this.seqResult({
+          element: this.elements,
+          left: lpadLeftNum,
+          right: lpadRightNum,
+        });
+      }
+      return false;
     },
   },
   watch: {
@@ -250,6 +275,28 @@ export default {
     closeMadal() {
       this.resetNum();
     },
+    cellRenderer(seqResult) {
+      if (!seqResult) {
+        return;
+      }
+      const color = seqResult.substring(0, 2);
+      let resultCls = '';
+      if (color === '파랑') {
+        resultCls = 'blue';
+      } else if (color === '하늘') {
+        resultCls = 'sky';
+      } else if (color === '빨강') {
+        resultCls = 'red';
+      } else if (color === '노랑') {
+        resultCls = 'yellow';
+      } else if (color === '초록') {
+        resultCls = 'green';
+      } else if (color === '보라') {
+        resultCls = 'purple';
+      }
+      // eslint-disable-next-line
+      return resultCls;
+    },
   },
   beforeDestroy() {
     clearTimeout(this.timeout);
@@ -271,5 +318,32 @@ export default {
   .overCanvas {
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+  .modalWrapper {
+    display: flex;
+    justify-content: center;
+  }
+  .cell.blue {
+    background-color: blue;
+    color: white;
+  }
+  .cell.red {
+    background-color: red;
+    color: white;
+  }
+  .cell.sky {
+    background-color: deepskyblue;
+    color: white;
+  }
+  .cell.yellow {
+    background-color: yellow;
+  }
+  .cell.green {
+    background-color: green;
+    color: white;
+  }
+  .cell.purple {
+    background-color: purple;
+    color: white;
   }
 </style>
