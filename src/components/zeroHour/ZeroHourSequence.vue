@@ -5,7 +5,7 @@
     <b-tabs
       v-model="activeTab"
       type="is-toggle"
-      destroy-on-hide
+      :animated="false"
     >
       <b-tab-item
         v-for="tabObj in tabType"

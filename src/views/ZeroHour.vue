@@ -3,7 +3,7 @@
     <b-tabs
       v-model="activeTab"
       type="is-boxed"
-      destroy-on-hide
+      :animated="false"
     >
       <br/>
       <b-tab-item
