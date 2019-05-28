@@ -58,6 +58,7 @@
       </div>
       <div
         v-else
+        class="modalWrapper"
       >
         <b-button>NO MATCH</b-button>
       </div>
